@@ -1,85 +1,44 @@
-// 1. Fetch your users data
-// 2. Loop over the data
-// 3. Display it in the `.customers` element
+(function(){
+  'use strict';
+  const URL = 'https://randomuser.me/api/?results=12';
+  // this is the DOM element where users are appended
+  const CUSTOMERS_LIST = document.getElementById('customers');
 
-const ul = document.getElementById('customers');
-const url = 'https://randomuser.me/api/?results=12';
+  fetch(URL).then(function(response) {
+    response.json().then(function(data) {
+      var results = data.results;
+      for (var i = 0; i < results.length; i++) {
+        // console.log(customers[i]);
 
+        // create list item
+        var listItem = document.createElement('li');
 
+        var customerImg = document.createElement('img');
+        customerImg.src = results[i].picture.large;
+        listItem.appendChild(customerImg);
 
-var customersList = document.getElementById('customers');
+        var customerName = document.createElement('h3');
+        customerName.textContent = `${results[i].name.first} ${results[i].name.last}`
+        listItem.appendChild(customerName);
 
-function createNode(element) {
-      return document.createElement(element);
-  }
+        var customerEmail = document.createElement('p');
+        customerEmail.textContent = results[i].email;
+        listItem.appendChild(customerEmail);
 
+        var customerAddress = document.createElement('p');
+        customerAddress.textContent = results[i].location.street;
+        listItem.appendChild(customerAddress);
 
-fetch(url).then(function(response){
-    response.json().then(function(data){
-      var customers = data.results;
-      for (var i = 0; i < customers.length; i++){
-      console.log(customers[i]);
-      var div = document.createElement('div');
+        var customerAddress2 = document.createElement('p');
+        customerAddress2.textContent = `${results[i].location.city}, ${results[i].location.state} ${results[i].location.postcode}`
+        listItem.appendChild(customerAddress2);
 
-      var customersList = document.getElementById('customers');
-      var container = document.getElementById('container');
-      // var div = createNode('div');
-      container.append(customersList);
-      document.body.append(div);
+        var customerPhone = document.createElement('p');
+        customerPhone.textContent = results[i].phone;
+        listItem.appendChild(customerPhone);
 
-
-
-
-      var customerPic = document.createElement('img');
-      var picture = customers[i].picture.large;
-      console.log(picture);
-      var img = createNode('img');
-      img.src = customers[i].picture.large;
-      document.body.appendChild(img);
-
-
-
-      var customerName = document.createElement('h3');
-      var name = customers[i].name.first + " " + customers[i].name.last;
-      customerName.textContent = name;
-      customerName.className = 'name'
-      console.log(name);
-      document.body.appendChild(customerName);
-
-      var customerEmail = document.createElement('h4');
-      var email = customers[i].email;
-      customerEmail.textContent = email;
-      customerEmail.className = 'email';
-      console.log(email);
-      document.body.appendChild(customerEmail);
-
-      var customerAddress = document.createElement('h4');
-      var address = customers[i].location.street;
-      customerAddress.textContent = address;
-      customerAddress.className = 'address';
-      console.log(address);
-      document.body.appendChild(customerAddress);
-
-      var customerAddress2 = document.createElement('h4');
-      var address2 = customers[i].location.city + ", " + customers[i].location.state + customers[i].location.postcode;
-      customerAddress2.textContent = address2;
-      customerAddress2.className = 'address2';
-      console.log(address2);
-      document.body.appendChild(customerAddress2);
-
-      var customerPhone = document.createElement('h4');
-      var phone = customers[i].phone;
-      customerPhone.textContent = phone;
-      customerPhone.className = 'phone';
-      console.log(phone);
-      document.body.appendChild(customerPhone);
-
-
-}
+        CUSTOMERS_LIST.appendChild(listItem);
       }
-
-
-
-
-  );
-});
+    });
+  });
+})();
